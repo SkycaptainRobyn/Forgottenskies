@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgotten Skies - Interactive Transmedia Universe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #e8f4f0 0%, #d4e8f7 50%, #f0f8e8 100%);
+            color: #2c4a3d;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(rgba(232, 244, 240, 0.9), rgba(212, 232, 247, 0.9)), 
+                        radial-gradient(circle at 30% 20%, rgba(108, 162, 108, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(120, 180, 200, 0.2) 0%, transparent 50%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(3px 3px at 25px 35px, rgba(108, 162, 108, 0.4), transparent),
+                radial-gradient(2px 2px at 45px 75px, rgba(120, 180, 200, 0.3), transparent),
+                radial-gradient(1px 1px at 95px 45px, rgba(139, 160, 90, 0.3), transparent);
+            background-repeat: repeat;
+            background-size: 120px 120px;
+            animation: gentleFloat 25s ease-in-out infinite;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            25% { transform: translateY(-10px) scale(1.02); }
+            50% { transform: translateY(-15px) scale(1); }
+            75% { transform: translateY(-5px) scale(0.98); }
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #6ca26c, #78b4c8, #8ba05a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(108, 162, 108, 0.3);
+            position: relative;
+            z-index: 1;
+            font-weight: normal;
+        }
+
+        .tagline {
+            font-size: 1.6rem;
+            margin-bottom: 2rem;
+            color: #4a7c5d;
+            text-shadow: 0 0 20px rgba(74, 124, 93, 0.2);
+            position: relative;
+            z-index: 1;
+            font-style: italic;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            max-width: 800px;
+            line-height: 1.7;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+            opacity: 0.85;
+            color: #2c4a3d;
+        }
+
+        .section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #4a7c5d;
+            text-shadow: 0 0 20px rgba(74, 124, 93, 0.2);
+            font-weight: normal;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(108, 162, 108, 0.3);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(108, 162, 108, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(108, 162, 108, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(108, 162, 108, 0.6);
+            box-shadow: 0 25px 50px rgba(108, 162, 108, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            color: #6ca26c;
+            filter: drop-shadow(0 5px 10px rgba(108, 162, 108, 0.3));
+        }
+
+        .feature-title {
+            font-size: 1.6rem;
+            margin-bottom: 18px;
+            color: #4a7c5d;
+            font-weight: bold;
+        }
+
+        .feature-description {
+            color: #2c4a3d;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .world-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 50px;
+            margin: 50px 0;
+            border: 2px solid rgba(120, 180, 200, 0.3);
+            box-shadow: 0 15px 40px rgba(120, 180, 200, 0.1);
+        }
+
+        .world-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .world-image {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(108, 162, 108, 0.2);
+            transition: all 0.3s ease;
+            border: 3px solid rgba(108, 162, 108, 0.3);
+        }
+
+        .world-image:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(108, 162, 108, 0.3);
+            border-color: rgba(108, 162, 108, 0.6);
+        }
+
+        .world-image img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .world-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .world-image-caption {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #2c4a3d;
+            font-style: italic;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .map-section {
+            background: rgba(240, 232, 210, 0.9);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 60px 0;
+            border: 3px solid rgba(139, 160, 90, 0.4);
+            box-shadow: 0 20px 50px rgba(139, 160, 90, 0.15);
+        }
+
+        .map-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .map-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(139, 160, 90, 0.5);
+        }
+
+        .map-caption {
+            margin-top: 20px;
+            font-style: italic;
+            color: #4a7c5d;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 35px;
+        }
+
+        .class-card {
+            background: rgba(240, 248, 232, 0.8);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(139, 160, 90, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(139, 160, 90, 0.1);
+        }
+
+        .class-card:hover {
+            background: rgba(240, 248, 232, 1);
+            border-color: rgba(139, 160, 90, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(139, 160, 90, 0.2);
+        }
+
+        .class-name {
+            font-size: 1.3rem;
+            color: #4a7c5d;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .class-description {
+            color: #2c4a3d;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .experience-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            margin-top: 50px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            border-left: 5px solid #6ca26c;
+            box-shadow: 0 10px 25px rgba(108, 162, 108, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 35px rgba(108, 162, 108, 0.15);
+        }
+
+        .timeline-number {
+            font-size: 2.5rem;
+            color: #6ca26c;
+            font-weight: bold;
+            min-width: 50px;
+            text-shadow: 0 2px 10px rgba(108, 162, 108, 0.3);
+        }
+
+        .timeline-content h3 {
+            color: #4a7c5d;
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+        }
+
+        .timeline-content p {
+            color: #2c4a3d;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(108, 162, 108, 0.2), rgba(120, 180, 200, 0.2));
+            border-radius: 25px;
+            padding: 70px 50px;
+            margin-top: 70px;
+            border: 2px solid rgba(108, 162, 108, 0.3);
+            box-shadow: 0 20px 50px rgba(108, 162, 108, 0.1);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: linear-gradient(45deg, #6ca26c, #78b4c8);
+            color: white;
+            text-decoration: none;
+            border-radius: 35px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            margin: 12px;
+            box-shadow: 0 12px 35px rgba(108, 162, 108, 0.3);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 45px rgba(108, 162, 108, 0.4);
+            background: linear-gradient(45deg, #78b4c8, #6ca26c);
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #4a7c5d;
+            text-align: center;
+            max-width: 650px;
+            margin: 45px auto;
+            padding: 30px;
+            border-left: 4px solid #78b4c8;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 0 15px 15px 0;
+            box-shadow: 0 8px 25px rgba(120, 180, 200, 0.1);
+        }
+
+        .nature-accent {
+            display: inline-block;
+            color: #6ca26c;
+            font-size: 1.2em;
+            margin: 0 5px;
+            animation: gentleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes gentleGlow {
+            from { text-shadow: 0 0 5px rgba(108, 162, 108, 0.3); }
+            to { text-shadow: 0 0 15px rgba(108, 162, 108, 0.6); }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .tagline {
+                font-size: 1.3rem;
+            }
+            
+            .timeline-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .world-section {
+                padding: 30px;
+            }
+
+            .cta-section {
+                padding: 50px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Forgotten Skies</h1>
+        <div class="tagline">Where Nature and Adventure Dance Among the Clouds</div>
+        <div class="subtitle">
+            An immersive transmedia universe combining interactive audiobooks, RPG mechanics, and rich storytelling in a verdant world of floating gardens, skyships, and aerial civilizations living in harmony with nature.
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">What is Forgotten Skies?</h2>
+        
+        <div class="world-section">
+            <p style="font-size: 1.3rem; line-height: 1.8; text-align: center; margin-bottom: 35px;">
+                <strong>Forgotten Skies</strong> is a revolutionary transmedia experience that brings together the best of interactive fiction, tabletop gaming, and digital innovation. Set in a breathtaking solarpunk world where civilization thrives on floating islands adorned with lush gardens and connected by sustainable sky routes, our universe offers multiple ways to experience epic adventures.
+            </p>
+            
+            <div class="quote">
+                "Thirty kilometers above the surface of the great ocean, Commander Jade Wilson's fleet cuts through thick gray clouds, where floating cities bloom with life and discovery awaits in equal measure..."
+                <br><em>— From "Cirrus Noirs," Book One of the Forgotten Skies Chronicles</em>
+            </div>
+        </div>
+
+        <div class="world-gallery">
+            <div class="world-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%2387CEEB'/%3E%3Ccircle cx='200' cy='150' r='80' fill='%23228B22' opacity='0.7'/%3E%3Ccircle cx='200' cy='130' r='30' fill='%23D2691E' opacity='0.8'/%3E%3Ctext x='200' y='130' text-anchor='middle' fill='white' font-size='12'%3EFloating City%3C/text%3E%3Cpath d='M50,200 Q200,100 350,200' stroke='%236B8E23' stroke-width='3' fill='none'/%3E%3C/svg%3E" alt="Magnificent floating city with clockwork architecture">
+                <div class="world-image-caption">
+                    A magnificent floating metropolis crowned with intricate clockwork architecture, where time itself seems to flow in harmony with the natural world
+                </div>
+            </div>
+            
+            <div class="world-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%2387CEEB'/%3E%3Crect x='50' y='100' width='300' height='100' rx='20' fill='%23D2691E' opacity='0.8'/%3E%3Ccircle cx='100' cy='140' r='8' fill='%23228B22'/%3E%3Ccircle cx='150' cy='160' r='6' fill='%23228B22'/%3E%3Ccircle cx='300' cy='135' r='10' fill='%23228B22'/%3E%3Crect x='200' y='120' width='80' height='40' rx='20' fill='%236495ED' opacity='0.7'/%3E%3Ctext x='200' y='140' text-anchor='middle' fill='white' font-size='10'%3ESkyship Interior%3C/text%3E%3C/svg%3E" alt="Cozy skyship interior with living plants">
+                <div class="world-image-caption">
+                    The warm, lived-in interior of a skyship where travelers cultivate gardens among the clouds, bringing life to their aerial journeys
+                </div>
+            </div>
+        </div>
+
+        <div class="map-section">
+            <h3 style="color: #4a7c5d; text-align: center; margin-bottom: 25px; font-size: 2rem;">Explore the Known Worlds</h3>
+            <p style="text-align: center; margin-bottom: 30px; color: #2c4a3d; font-size: 1.1rem;">
+                The Confinium Region represents just one quadrant of the vast Known Worlds, where floating island clusters form the backbone of aerial civilization. Each cluster tells its own story of prosperity, conflict, and discovery.
+            </p>
+            
+            <div class="map-container">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23F5DEB3'/%3E%3Cpattern id='hex' x='0' y='0' width='20' height='17.32' patternUnits='userSpaceOnUse'%3E%3Cpolygon points='10,0 20,5.77 20,11.55 10,17.32 0,11.55 0,5.77' fill='none' stroke='%23DEB887' stroke-width='0.5'/%3E%3C/pattern%3E%3Crect width='800' height='600' fill='url(%23hex)'/%3E%3Cg%3E%3Ccircle cx='200' cy='150' r='25' fill='%23333'/%3E%3Ctext x='200' y='135' text-anchor='middle' fill='%23F5DEB3' font-size='10'%3EGLARON%3C/text%3E%3C/g%3E%3Cg%3E%3Ccircle cx='350' cy='120' r='30' fill='%23333'/%3E%3Ctext x='350' y='105' text-anchor='middle' fill='%23F5DEB3' font-size='10'%3EKRINGTON%3C/text%3E%3C/g%3E%3Cg%3E%3Ccircle cx='400' cy='200' r='40' fill='%23333'/%3E%3Ctext x='400' y='185' text-anchor='middle' fill='%23F5DEB3' font-size='12'%3ECONFINIUM%3C/text%3E%3C/g%3E%3Cg%3E%3Ccircle cx='550' cy='180' r='20' fill='%23333'/%3E%3Ctext x='550' y='165' text-anchor='middle' fill='%23F5DEB3' font-size='9'%3EARKENA%3C/text%3E%3C/g%3E%3Cg%3E%3Ccircle cx='650' cy='140' r='18' fill='%23333'/%3E%3Ctext x='650' y='125' text-anchor='middle' fill='%23F5DEB3' font-size='8'%3ESHIPPERTON%3C/text%3E%3C/g%3E%3Cg%3E%3Ccircle cx='300' cy='300' r='22' fill='%23333'/%3E%3Ctext x='300' y='285' text-anchor='middle' fill='%23F5DEB3' font-size='9'%3ECARINGTON%3C/text%3E%3C/g%3E%3Cg%3E%3Ccircle cx='500' cy='350' r='25' fill='%23333'/%3E%3Ctext x='500' y='335' text-anchor='middle' fill='%23F5DEB3' font-size='10'%3EARCHENOR%3C/text%3E%3C/g%3E%3Ctext x='50' y='50' fill='%238B4513' font-size='24' font-weight='bold'%3ECONFINIUM REGION%3C/text%3E%3Ctext x='50' y='75' fill='%238B4513' font-size='14'%3EKnown Worlds - Quadrant 3B%3C/text%3E%3Cg transform='translate(650,50)'%3E%3Ccircle cx='30' cy='30' r='25' fill='none' stroke='%238B4513' stroke-width='2'/%3E%3Cline x1='30' y1='10' x2='30' y2='20' stroke='%238B4513' stroke-width='2'/%3E%3Ctext x='30' y='70' text-anchor='middle' fill='%238B4513' font-size='12'%3EN%3C/text%3E%3C/g%3E%3C/svg%3E" alt="Map of the Confinium Region">
+                
+                <div class="map-caption">
+                    The Confinium Region - Known Worlds Quadrant 3B<br>
+                    <em>Where island clusters form the political and economic heart of aerial civilization</em>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 25px; color: #2c4a3d; line-height: 1.6;">
+                From the bustling trade hub of <strong>Confinium</strong> to the scholarly towers of <strong>Arkena</strong>, each island cluster has developed its own culture, governance, and relationship with the sky-bound ecosystem. The vast spaces between clusters are home to wild sky islands, hidden ruins, and the endless adventure that awaits bold explorers.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎧</div>
+                <div class="feature-title">Interactive Audiobooks</div>
+                <div class="feature-description">Experience branching narratives where your choices shape the story. AI-powered narration adapts to your decisions, creating a personalized adventure every time you soar through our verdant skies.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎲</div>
+                <div class="feature-title">RPG Mechanics</div>
+                <div class="feature-description">Build your character with our intuitive d10 percentage system. Choose from five unique classes, each with special abilities and distinct roles in this thriving aerial civilization.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <div class="feature-title">Living World</div>
+                <div class="feature-description">Explore a detailed solarpunk universe of floating gardens, sustainable technology, political intrigue, hidden magic, and aerial societies that have learned to live in harmony with nature.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">Cross-Platform</div>
+                <div class="feature-description">Seamlessly experience stories across audiobooks, mobile apps, potential board games, and future video game adaptations as our living universe continues to grow.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">AI-Powered</div>
+                <div class="feature-description">Dynamic content generation creates unique music, atmosphere, and narrator tones that respond to your choices and character development, bringing the world to life around you.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🌱</div>
+                <div class="feature-title">Community-Driven</div>
+                <div class="feature-description">Connect with fellow sky explorers, share your adventures, and contribute to the expanding universe through community features that help our world flourish and grow.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Choose Your Sky-Bound Destiny</h2>
+        
+        <p style="text-align: center; font-size: 1.2rem; margin-bottom: 35px; color: #2c4a3d;">
+            In the world of Forgotten Skies, every adventurer has a role to play in the aerial civilization <span class="nature-accent">🌿</span> Choose your path among the clouds:
+        </p>
+
+        <div class="class-grid">
+            <div class="class-card">
+                <div class="class-name">Skyrider</div>
+                <div class="class-description">Master pilot and aerial warrior. Dance through wind currents and navigate treacherous skies with grace and courage.</div>
+            </div>
+
+            <div class="class-card">
+                <div class="class-name">Sky Lord</div>
+                <div class="class-description">Noble commander with political wisdom. Guide communities through influence, diplomacy, and strategic thinking.</div>
+            </div>
+
+            <div class="class-card">
+                <div class="class-name">Skycraftmaster</div>
+                <div class="class-description">Brilliant engineer and innovator. Create the sustainable technology that keeps civilization soaring among the clouds.</div>
+            </div>
+
+            <div class="class-card">
+                <div class="class-name">Sky Navigator</div>
+                <div class="class-description">Master of maps and weather patterns. Guide expeditions through uncharted aerial territories and hidden sky routes.</div>
+            </div>
+
+            <div class="class-card">
+                <div class="class-name">Skybotanist</div>
+                <div class="class-description">Keeper of life aboard skyships. Cultivate the floating gardens and living systems that sustain aerial communities.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Your Journey Begins</h2>
+        
+        <div class="experience-timeline">
+            <div class="timeline-item">
+                <div class="timeline-number">1</div>
+                <div class="timeline-content">
+                    <h3>Discover the World</h3>
+                    <p>Start with "Cirrus Noirs" and other Forgotten Skies stories to immerse yourself in our rich universe of floating gardens and aerial adventure where nature and technology exist in perfect harmony.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">2</div>
+                <div class="timeline-content">
+                    <h3>Create Your Character</h3>
+                    <p>Choose your class, customize your background, and develop your unique sky-bound hero with our intuitive character creation system that celebrates both individual growth and community.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">3</div>
+                <div class="timeline-content">
+                    <h3>Experience Interactive Stories</h3>
+                    <p>Make choices that matter in our AI-powered interactive audiobooks where your decisions shape not only the narrative but also the flourishing world around you and your character's destiny.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">4</div>
+                <div class="timeline-content">
+                    <h3>Expand Your Adventure</h3>
+                    <p>Continue your journey across multiple platforms as Forgotten Skies grows into board games, video games, and expanded digital experiences that celebrate sustainable futures and natural wonder.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="cta-section">
+            <h2 style="margin-bottom: 25px; color: #4a7c5d;">Ready to Take Flight?</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 45px; color: #2c4a3d;">
+                Join thousands of adventurers already exploring the verdant floating cities of the Forgotten Skies universe. Your aerial destiny awaits among the clouds! <span class="nature-accent">🌿</span>
+            </p>
+            
+            <a href="#" class="cta-button">Start Your Adventure</a>
+            <a href="#" class="cta-button">Learn More</a>
+            
+            <p style="margin-top: 35px; font-style: italic; color: #4a7c5d;">
+                Follow our development journey and be among the first to experience this revolutionary form of interactive entertainment that celebrates both technological innovation and natural harmony.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
